@@ -55,11 +55,11 @@ ggplot(data=df1, aes(x=State, y=Median, fill=State)) +
                                                       title = "Median ABV per state") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 #Which state has the maximum alcoholic (ABV) beer? Which state has the most bitter (IBU) beer?
-beer_brews_na[beer_brews_na$IBU == max(beer_brews_na$IBU),]
+beer_brews[beer_brews$IBU == max(beer_brews$IBU, na.rm = TRUE),]
 #Oregon!
 
-beer_brews_na[beer_brews_na$ABV == max(beer_brews_na$ABV),]
-#kentuckyy
+beer_brews[beer_brews$ABV == max(beer_brews$ABV, na.rm = TRUE),]
+#colorado
 
 #Summary statistics for the ABV variable
 setDT(beer_brews_na)[,list(Mean=mean(ABV), Max=max(ABV), Min=min(ABV), Median=as.numeric(median(ABV)), Std=sd(ABV))]
