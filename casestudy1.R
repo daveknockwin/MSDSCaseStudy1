@@ -5,6 +5,11 @@ str(beers)
 breweries = read.csv(file="~/Downloads/CaseStudy_2_2_2_2/Breweries.csv", header = TRUE)
 head(breweries)
 str(breweries)
+#need to make sure the brewery ID has the same name for merge function to work
+names(breweries)[1] = "Brewery_id"
+names(breweries)
+head(breweries)
+str(breweries)
 
 #How many breweries are present in each state?
 
@@ -12,13 +17,7 @@ library(data.table) ## >= v1.9.6
 setDT(breweries)[, .(count = uniqueN(Brewery_id)), by = State]
 
 
-#Merge beer data with the breweries data. Print the first 6 observations and the last six observations to check the merged file.
-
-#need to make sure the brewery ID has the same name for merge function to work
-names(breweries)[1] = "Brewery_id"
-names(breweries)
-head(breweries)
-str(breweries)
+#Merge beer data with the breweries data. Print the first 6 observations and the last six observations to check the merged file
 
 #merge dataframes by brewery id
 beer_brews = merge(beers, breweries, by = "Brewery_id", all = FALSE)
