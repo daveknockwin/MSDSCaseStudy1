@@ -1,8 +1,8 @@
-beers = read.csv(file="~/Downloads/CaseStudy_2_2_2_2/Beers.csv", header = TRUE)
+beers = read.csv(file="C:/Users/David/Documents/SMU/Beers.csv", header = TRUE)
 head(beers)
 str(beers)
 
-breweries = read.csv(file="~/Downloads/CaseStudy_2_2_2_2/Breweries.csv", header = TRUE)
+breweries = read.csv(file="C:/Users/David/Documents/SMU/Breweries.csv", header = TRUE)
 head(breweries)
 str(breweries)
 #need to make sure the brewery ID has the same name for merge function to work
@@ -42,7 +42,7 @@ df1 = setDT(beer_brews)[,list(Mean=mean(ABV, na.rm = TRUE), Max=max(ABV, na.rm =
 AK = beer_brews[beer_brews$State == " AK",]
 median(AK$ABV, na.rm = TRUE)
 
-df = setDT(beer_brews)[,list(Mean=mean(IBU, na.rm = TRUE), Max=max(IBU, na.rm = TRUE), Min=min(IBU, na.rm = TRUE), Median=as.numeric(median(IBU, na.rm = TRUE)), Std=sd(IBU, na.rm = TRUE)), by=State]
+df = setDT(beer_brews)[,list(Mean=mean(IBU, na.rm = TRUE), Max=max(IBU), Min=min(IBU), Median=as.numeric(median(IBU, na.rm = TRUE)), Std=sd(IBU, na.rm = TRUE)), by=State]
 
 
 library(ggplot2)
@@ -69,7 +69,7 @@ mean(beer_brews$ABV, na.rm = TRUE)
 
 #Is there an apparent relationship between the bitterness of the beer and its alcoholic content? Draw a scatter plot.
 
-ggplot(beer_brews_na, aes(x=ABV, y=IBU)) + 
+ggplot(beer_brews, aes(x=ABV, y=IBU)) + 
   labs(x = "ABV", y = "IBU", title = "Scatterplot of bitterness versus alcoholic content") + 
   geom_point(shape=1) +    
   geom_smooth(method=lm)
