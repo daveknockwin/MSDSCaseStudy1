@@ -17,7 +17,7 @@ library(data.table) ## >= v1.9.6
 setDT(breweries)[, .(count = uniqueN(Brewery_id)), by = State]
 
 
-#Merge beer data with the breweries data. Print the first 6 observations and the last six observations to check the merged file
+#Merge beer data with the breweries data. Print the first 6 observations and the last six observations to check the merged file.
 
 #merge dataframes by brewery id
 beer_brews = merge(beers, breweries, by = "Brewery_id", all = FALSE)
@@ -33,15 +33,16 @@ colSums(is.na(beer_brews))
 #Compute the median alcohol content and international bitterness unit for each state. Plot a bar chart to compare.
 #need to ignore nas for median
 
-beer_brews_na =na.omit(beer_brews)
+#beer_brews_na =na.omit(beer_brews)
 
-df1 = setDT(beer_brews_na)[,list(Mean=mean(ABV), Max=max(ABV), Min=min(ABV), Median=as.numeric(median(ABV)), Std=sd(ABV)), by=State]
+df1 = setDT(beer_brews)[,list(Mean=mean(ABV, na.rm = TRUE), Max=max(ABV, na.rm = TRUE), Min=min(ABV, na.rm = TRUE), Median=as.numeric(median(ABV, na.rm = TRUE)), Std=sd(ABV, na.rm = TRUE)), by=State]
+
 
 #check
-AK = beer_brews_na[beer_brews_na$State == " AK",]
-median(AK$ABV)
+AK = beer_brews[beer_brews$State == " AK",]
+median(AK$ABV, na.rm = TRUE)
 
-df = setDT(beer_brews_na)[,list(Mean=mean(IBU), Max=max(IBU), Min=min(IBU), Median=as.numeric(median(IBU)), Std=sd(IBU)), by=State]
+df = setDT(beer_brews)[,list(Mean=mean(IBU, na.rm = TRUE), Max=max(IBU, na.rm = TRUE), Min=min(IBU, na.rm = TRUE), Median=as.numeric(median(IBU, na.rm = TRUE)), Std=sd(IBU, na.rm = TRUE)), by=State]
 
 
 library(ggplot2)
@@ -61,10 +62,10 @@ beer_brews[beer_brews$ABV == max(beer_brews$ABV, na.rm = TRUE),]
 #colorado
 
 #Summary statistics for the ABV variable
-setDT(beer_brews_na)[,list(Mean=mean(ABV), Max=max(ABV), Min=min(ABV), Median=as.numeric(median(ABV)), Std=sd(ABV))]
+setDT(beer_brews)[,list(Mean=mean(ABV, na.rm = TRUE), Max=max(ABV, na.rm = TRUE), Min=min(ABV, na.rm = TRUE), Median=as.numeric(median(ABV, na.rm = TRUE)), Std=sd(ABV, na.rm = TRUE))]
 
 #check
-mean(beer_brews_na$ABV)
+mean(beer_brews$ABV, na.rm = TRUE)
 
 #Is there an apparent relationship between the bitterness of the beer and its alcoholic content? Draw a scatter plot.
 
@@ -73,3 +74,5 @@ ggplot(beer_brews_na, aes(x=ABV, y=IBU)) +
   geom_point(shape=1) +    
   geom_smooth(method=lm)
 
+#correlation coefficient
+cor(beer_brews$ABV, beer_brews$IBU)
