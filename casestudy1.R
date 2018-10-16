@@ -75,4 +75,5 @@ ggplot(beer_brews, aes(x=ABV, y=IBU)) +
   geom_smooth(method=lm)
 
 #correlation coefficient
-cor(beer_brews$ABV, beer_brews$IBU)
+beer_brews_na =na.omit(beer_brews)
+cor(beer_brews_na$ABV, beer_brews_na$IBU)
