@@ -41,7 +41,7 @@ The Questions We're Interested in Answering
 
 Researcher Name	Responsibilities
 
-Hannah Kosinovsky	Coding, Grubhub, Q6, Q7
+Hannah Kosinovsky	Coding, Github, Q6, Q7
 
 David Nguyen	Powerpoint, Q4, Q5
 
