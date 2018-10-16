@@ -1,0 +1,115 @@
+---
+title: "Case 1"
+author: "John Yan, Hannah Kosinovsky, David Nguyen"
+date: "October 15, 2018"
+output: html_document
+---
+
+## Data Overview
+
+This study contains a data analysis of two datasets Beers.csv and Breweries.csv. The Beers dataset contains a list of 2410 US craft beers and Breweries dataset contains 558 US breweries.
+
+```{r setup}
+#install.packages("ggplot2")
+
+beers = read.csv(file="beers.csv", header = TRUE)
+head(beers)
+str(beers)
+
+breweries = read.csv(file="Breweries.csv", header = TRUE)
+head(breweries)
+str(breweries)
+
+names(breweries)[1] = "Brewery_id"
+names(breweries)
+head(breweries)
+str(breweries)
+
+```
+
+## Question 1
+
+How many breweries are present in each state?
+
+```{r}
+library(data.table) ## >= v1.9.6
+setDT(breweries)[, .(count = uniqueN(Brewery_id)), by = State]
+```
+
+
+## Question 2
+
+Merge beer data with the breweries data. Print the first 6 observations and the last six observations to check the merged file.
+
+```{r}
+beer_brews = merge(beers, breweries, by = "Brewery_id", all = FALSE)
+head(beer_brews, 6)
+tail(beer_brews, 6)
+```
+
+## Question 3
+
+Report the number of NA's in each column.
+
+```{r}
+colSums(is.na(beer_brews))
+```
+
+## Question 4
+
+Compute the median alcohol content and international bitterness unit for each state. Plot a bar chart to compare.
+Need to ignore nas for median
+Plot the median ABV and IBU using GGplot
+```{r}
+
+df1 = setDT(beer_brews)[,list(Mean=mean(ABV, na.rm = TRUE), Max=max(ABV, na.rm = TRUE), Min=min(ABV, na.rm = TRUE), Median=as.numeric(median(ABV, na.rm = TRUE)), Std=sd(ABV, na.rm = TRUE)), by=State]
+
+AK = beer_brews[beer_brews$State == " AK",]
+median(AK$ABV, na.rm = TRUE)
+
+df = setDT(beer_brews)[,list(Mean=mean(IBU, na.rm = TRUE), Max=max(IBU), Min=min(IBU), Median=as.numeric(median(IBU, na.rm = TRUE)), Std=sd(IBU, na.rm = TRUE)), by=State]
+
+library(ggplot2)
+ggplot(data=df, aes(x=State, y=Median, fill=State)) +
+  geom_bar(stat="identity", show.legend=FALSE) + labs(x = "State", y = "Median of IBU", 
+                                                      title = "Median IBU per state") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+ggplot(data=df1, aes(x=State, y=Median, fill=State)) +
+  geom_bar(stat="identity", show.legend=FALSE) + labs(x = "State", y = "Median of ABV", 
+                                                      title = "Median ABV per state") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+```
+## Question 5
+
+Which state has the maximum alcoholic (ABV) beer? Which state has the most bitter (IBU) beer?
+
+```{r}
+beer_brews[beer_brews$IBU == max(beer_brews$IBU, na.rm = TRUE),]
+
+beer_brews[beer_brews$ABV == max(beer_brews$ABV, na.rm = TRUE),]
+
+```
+
+## Question 6
+Summary statistics for the ABV variable
+
+```{r}
+setDT(beer_brews)[,list(Mean=mean(ABV, na.rm = TRUE), Max=max(ABV, na.rm = TRUE), Min=min(ABV, na.rm = TRUE), Median=as.numeric(median(ABV, na.rm = TRUE)), Std=sd(ABV, na.rm = TRUE))]
+
+mean(beer_brews$ABV, na.rm = TRUE)
+
+```
+
+## Question 7
+
+Is there an apparent relationship between the bitterness of the beer and its alcoholic content? Draw a scatter plot.
+Calculate the correlation coefficient
+
+```{r}
+ggplot(beer_brews, aes(x=ABV, y=IBU)) + 
+  labs(x = "ABV", y = "IBU", title = "Scatterplot of bitterness versus alcoholic content") + 
+  geom_point(shape=1) +    
+  geom_smooth(method=lm)
+
+cor(beer_brews$ABV, beer_brews$IBU)
+```
