@@ -25,19 +25,19 @@ Folder & File Information
 
 The Questions We're Interested in Answering
 
-1. How many breweries are currently present in each state?
+1.) How many breweries are currently present in each state?
 
-2. Looking at both datasets together what are the first six observations and the last six observations in the merged dataset?
+2.) Looking at both datasets together what are the first six observations and the last six observations in the merged dataset?
 
-3. What is the number of missing data points in each column?
+3.) What is the number of missing data points in each column?
 
-4. What is the median alcohol content and international bitterness unit for each state, and what does the plot look like?
+4.) What is the median alcohol content and international bitterness unit for each state, and what does the plot look like?
 
-5. Which state has the maximum alcoholic (ABV) beer? Which state has the most bitter (IBU) beer?
+5.) Which state has the maximum alcoholic (ABV) beer? Which state has the most bitter (IBU) beer?
 
-6. What are the Summary statistics for the ABV variable?
+6.) What are the Summary statistics for the ABV variable?
 
-7. Is there an apparent relationship between the bitterness of the beer and its alcoholic content?
+7.) Is there an apparent relationship between the bitterness of the beer and its alcoholic content?
 
 Researcher Name	Responsibilities
 
